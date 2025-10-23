@@ -1,0 +1,122 @@
+defaults:
+  seed: 42
+  device: auto
+paths:
+  raw_users: data/users.csv
+  raw_interactions: data/interactions.csv
+  processed_profiles: data/profiles.parquet
+  profile_encoder: models/preprocess/profile_encoder.joblib
+  popularity: data/popularity.parquet
+  pairs_train: data/pairs_train.parquet
+  pairs_val: data/pairs_val.parquet
+  twow_model_dir: models/twow
+  twow_checkpoint: models/twow/model.pt
+  twow_pipeline: models/twow/feature_pipeline.joblib
+  query_embeddings: models/twow/query_embeddings.npz
+  candidate_embeddings: models/twow/candidate_embeddings.npz
+  faiss_index: models/faiss/index.bin
+  faiss_id_map: models/faiss/id_map.parquet
+  retrieved_pools: data/retrieved_pools.parquet
+  rerank_features_train: data/rerank_features_train.parquet
+  rerank_features_infer: data/rerank_features_infer.parquet
+  rerank_model_dir: models/lgbm
+  rerank_model: models/lgbm/model.txt
+  rerank_pipeline: models/lgbm/feature_pipeline.joblib
+  calibration_model: models/lgbm/calibrator.joblib
+  submission_dir: submissions
+  submission_file: submissions/recommendations.csv
+  metrics_report: reports/metrics.json
+preprocess:
+  text_fields:
+    - about
+    - education
+    - occupation
+    - interests
+  numeric_fields:
+    - age
+    - latitude
+    - longitude
+  categorical_fields:
+    - gender
+    - marital_status
+    - sect
+    - caste
+    - state
+    - language
+    - education_level
+    - industry
+  fill_values:
+    marital_status: unknown
+    sect: unknown
+    caste: unknown
+    state: unknown
+    language: unknown
+    education_level: unknown
+    industry: unknown
+  age_clip: [18, 80]
+  normalize_numeric: true
+  text_clean: true
+pairs:
+  val_ratio: 0.2
+  neg_pos_ratio: 3
+  hard_negative_ratio: 0.0
+  min_interactions_per_user: 1
+  same_gender_block: true
+  max_negatives_per_user: 500
+  seed: 42
+two_tower:
+  embedding_dim: 128
+  hidden_dims: [256, 128]
+  dropout: 0.1
+  batch_size: 128
+  lr: 0.0001
+  weight_decay: 0.0001
+  temperature: 0.07
+  epochs: 15
+  num_workers: 0
+  text_encoder: sentence-transformer
+  sentence_transformer_name: sentence-transformers/all-MiniLM-L6-v2
+  tfidf_max_features: 5000
+  device: auto
+  save_every: 5
+  early_stop_patience: 5
+retrieval:
+  k_retrieve: 200
+  gender_filter: true
+  faiss:
+    type: flat
+    metric: ip
+    normalize: true
+    nlist_factor: 1.0
+    nprobe: 10
+    pq_m: 16
+reranker:
+  top_k: 100
+  use_grouping: true
+  features:
+    include_embedding_interactions: true
+    include_abs_diff: true
+    include_product: true
+  lightgbm:
+    objective: lambdarank
+    metric: ndcg
+    learning_rate: 0.05
+    num_leaves: 64
+    n_estimators: 1000
+    early_stopping_rounds: 50
+    feature_fraction: 0.8
+    bagging_fraction: 0.8
+    bagging_freq: 5
+    min_data_in_leaf: 20
+    max_bin: 255
+calibration:
+  method: platt
+evaluation:
+  ks: [1, 5, 10, 20, 50, 100]
+  fairness_columns: [gender, state, age_bucket]
+serve:
+  enforce_opposite_gender: true
+  fallback_popularity_k: 500
+logging:
+  level: INFO
+  log_dir: logs

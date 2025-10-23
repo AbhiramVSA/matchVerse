@@ -1,0 +1,27 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.python-version
+.mypy_cache/
+.pytest_cache/
+
+# Environments & IDEs
+.venv/
+venv/
+env/
+.idea/
+.vscode/
+.DS_Store
+
+# Logs & temp files
+*.log
+*.tmp
+
+# Model artifacts
+xgboost_matchmaking_model.json
+
+# Data (keep samples)
+data/*
+!data/sample_*.csv
