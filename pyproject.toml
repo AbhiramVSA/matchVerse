@@ -1,7 +1,7 @@
 [project]
 name = "matchverse"
 version = "0.1.0"
-description = "Add your description here"
+description = "End-to-end matchmaking recommender: trains an XGBoost compatibility model on user interactions and serves personalized profile suggestions via Streamlit."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
