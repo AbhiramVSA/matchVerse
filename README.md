@@ -61,7 +61,7 @@ uv run streamlit run streamlit_app.py
 
 ## Model notes
 
-The XGBoost pipeline uses ten pair features: ages, age difference, gender codes, same-state, same-caste, same-sect, and marital-status codes. It samples non-interacted pairs as negatives and uses a stratified 80/20 train/validation split. It scores up to 100 candidates and applies a small popularity penalty.
+The XGBoost pipeline uses ten pair features: ages, age difference, gender codes, same-state, same-caste, same-sect, and marital-status codes. It samples non-interacted pairs as negatives and uses a stratified 80/20 train/validation split. It scores the candidate pool, applies a small popularity penalty, and returns up to 100 profiles.
 
 The BPR model uses 64 latent factors and 150 iterations. It holds out one interaction per eligible user for evaluation and reports Recall and MAP at 10, 50, and 100. It can use popular profiles to fill a short candidate list.
 
