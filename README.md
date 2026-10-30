@@ -1,6 +1,10 @@
-# MatchVerse Recommender
+<p align="center">
+  <img src="assets/matchverse-mark.png" alt="Paired profile recommendation mark" width="200" />
+</p>
 
-An experimental profile recommender with an XGBoost ranker, a BPR retrieval model, and a Streamlit demo.
+<h1 align="center">MatchVerse Recommender</h1>
+
+<p align="center">An experimental profile recommender with an XGBoost ranker, a BPR retrieval model, and a Streamlit demo.</p>
 
 ## Project map
 
